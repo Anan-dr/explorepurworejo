@@ -1,17 +1,11 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Explore Purworejo</title>
-</head>
-<body>
-<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <title>Explore Purworejo</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<!-- LEAFLET CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 body {font-family: Arial; padding:20px;}
@@ -40,9 +34,11 @@ th,td {border:1px solid #ccc;padding:8px;}
 <tbody id="table"></tbody>
 </table>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- LEAFLET JS (HARUS DI ATAS SCRIPT KITA) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+// ================= DATA =================
 const wisata = [
 {nama:"Pantai Jatimalang", kategori:"Pantai", lat:-7.761, lng:109.981},
 {nama:"Gua Seplawan", kategori:"Alam", lat:-7.566, lng:110.022},
@@ -62,55 +58,74 @@ const wisata = [
 {nama:"Dawet Jembatan Butuh", kategori:"Kuliner", lat:-7.720, lng:110.020}
 ];
 
-const map = L.map('map').setView([-7.7,109.95],10);
+// ================= PETA =================
+const map = L.map('map').setView([-7.7, 109.95], 10);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-wisata.forEach(w=>{
-  L.marker([w.lat,w.lng]).addTo(map)
-  .bindPopup(`<b>${w.nama}</b><br>${w.kategori}`);
+// ================= MARKER =================
+wisata.forEach(w => {
+  L.marker([w.lat, w.lng])
+    .addTo(map)
+    .bindPopup(`<b>${w.nama}</b><br>${w.kategori}`);
 });
 
+// ================= HAVERSINE =================
 function jarak(lat1, lon1, lat2, lon2){
-  const R=6371;
-  const dLat=(lat2-lat1)*Math.PI/180;
-  const dLon=(lon2-lon1)*Math.PI/180;
-  const a=Math.sin(dLat/2)**2+
-    Math.cos(lat1*Math.PI/180)*
-    Math.cos(lat2*Math.PI/180)*
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+
+  const a =
+    Math.sin(dLat/2)**2 +
+    Math.cos(lat1*Math.PI/180) *
+    Math.cos(lat2*Math.PI/180) *
     Math.sin(dLon/2)**2;
-  return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+
+  return R*(2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
 }
 
-const center={lat:-7.713,lng:110.008};
-const table=document.getElementById("table");
+// ================= ANALISIS =================
+const center = {lat:-7.713, lng:110.008};
+const table = document.getElementById("table");
 
 wisata.forEach(w=>{
-  const d=jarak(center.lat,center.lng,w.lat,w.lng).toFixed(2);
-  table.innerHTML+=`<tr><td>${w.nama}</td><td>${w.kategori}</td><td>${d} km</td></tr>`;
+  const d = jarak(center.lat, center.lng, w.lat, w.lng).toFixed(2);
+
+  table.innerHTML += `
+  <tr>
+    <td>${w.nama}</td>
+    <td>${w.kategori}</td>
+    <td>${d} km</td>
+  </tr>`;
 });
 
+// ================= WISATA TERDEKAT =================
 function getLocation(){
-navigator.geolocation.getCurrentPosition(pos=>{
-const user={lat:pos.coords.latitude,lng:pos.coords.longitude};
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const user = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude
+    };
 
-const hasil=wisata.map(w=>({...w,d:jarak(user.lat,user.lng,w.lat,w.lng)}))
-.sort((a,b)=>a.d-b.d).slice(0,5);
+    const hasil = wisata.map(w=>({
+      ...w,
+      d: jarak(user.lat, user.lng, w.lat, w.lng)
+    }))
+    .sort((a,b)=>a.d-b.d)
+    .slice(0,5);
 
-let html="<h3>Wisata Terdekat:</h3>";
-hasil.forEach(w=>{
-html+=`<p>${w.nama} - ${w.d.toFixed(2)} km</p>`;
-});
+    let html = "<h3>Wisata Terdekat:</h3>";
+    hasil.forEach(w=>{
+      html += `<p>${w.nama} - ${w.d.toFixed(2)} km</p>`;
+    });
 
-document.getElementById("nearest").innerHTML=html;
-});
+    document.getElementById("nearest").innerHTML = html;
+  });
 }
 </script>
-
-</body>
-</html>
 
 </body>
 </html>
