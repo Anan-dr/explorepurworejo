@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <title>Explore Purworejo</title>
 
-<!-- LEAFLET CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 body {font-family: Arial; padding:20px;}
 h1 {text-align:center;}
-#map {height:400px; margin-top:20px;}
+#map {height:450px; margin-top:20px;}
 button {background:green;color:white;padding:10px;border:none;margin-top:10px;}
 table {margin-top:20px;width:100%;border-collapse:collapse;}
 th,td {border:1px solid #ccc;padding:8px;}
@@ -26,7 +25,7 @@ th,td {border:1px solid #ccc;padding:8px;}
 
 <div id="map"></div>
 
-<h3>Analisis Jarak</h3>
+<h3>Analisis Jarak dari Pusat Kota</h3>
 <table>
 <thead>
 <tr><th>Nama</th><th>Kategori</th><th>Jarak</th></tr>
@@ -34,32 +33,30 @@ th,td {border:1px solid #ccc;padding:8px;}
 <tbody id="table"></tbody>
 </table>
 
-<!-- LEAFLET JS (HARUS DI ATAS SCRIPT KITA) -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 // ================= DATA =================
 const wisata = [
-{nama:"Pantai Jatimalang", kategori:"Pantai", lat:-7.761, lng:109.981},
-{nama:"Gua Seplawan", kategori:"Alam", lat:-7.566, lng:110.022},
-{nama:"Curug Siklotok", kategori:"Air Terjun", lat:-7.586, lng:110.019},
-{nama:"Taman Sidandang", kategori:"Air Terjun", lat:-7.584, lng:110.018},
-{nama:"Museum Tosan Aji", kategori:"Budaya", lat:-7.709, lng:110.008},
-{nama:"Pantai Ketawang", kategori:"Pantai", lat:-7.804, lng:109.913},
-{nama:"Alun-Alun Purworejo", kategori:"Kota", lat:-7.713, lng:110.008},
-{nama:"Desa Wisata Pandanrejo", kategori:"Desa", lat:-7.650, lng:110.020},
-{nama:"Bedug Pendowo", kategori:"Religi", lat:-7.708, lng:110.005},
-{nama:"Pantai Jetis", kategori:"Pantai", lat:-7.800, lng:109.900},
-{nama:"Curug Muncar", kategori:"Air Terjun", lat:-7.590, lng:110.030},
-{nama:"Heroes Park", kategori:"Kota", lat:-7.710, lng:110.010},
-{nama:"Hutan Pinus Kalilo", kategori:"Alam", lat:-7.600, lng:110.050},
-{nama:"Demaji Ecopark", kategori:"Desa", lat:-7.650, lng:110.030},
-{nama:"Gunung Kunir", kategori:"Alam", lat:-7.580, lng:110.040},
-{nama:"Dawet Jembatan Butuh", kategori:"Kuliner", lat:-7.720, lng:110.020}
+{nama:"Pantai Dewaruci Jatimalang", kategori:"Pantai", lat:-7.878488522921065, lng:109.98290759583354},
+{nama:"Goa Seplawan", kategori:"Alam", lat:-7.772916529031929, lng:110.11025250192166},
+{nama:"Curug Siklotok", kategori:"Air Terjun", lat:-7.741915193999638, lng:110.09125668194677},
+{nama:"Museum Tosan Aji", kategori:"Budaya", lat:-7.710870709449446, lng:110.01001510073746},
+{nama:"Pantai Ketawang", kategori:"Pantai", lat:-7.846256051815044, lng:109.88613064457545},
+{nama:"Alun-Alun Purworejo", kategori:"Kota", lat:-7.712973636896891, lng:110.00902063854716},
+{nama:"Desa Wisata Pandanrejo", kategori:"Desa", lat:-7.7231988246578025, lng:110.12760601146873},
+{nama:"Bedug Pendowo", kategori:"Religi", lat:-7.708576641413623, lng:110.00824123554514},
+{nama:"Pantai Jetis", kategori:"Pantai", lat:-7.849204843385032, lng:109.89531572556669},
+{nama:"Curug Muncar", kategori:"Air Terjun", lat:-7.533894631115022, lng:109.94135499476945},
+{nama:"Heroes Park", kategori:"Kota", lat:-7.72502373290337, lng:110.01246876377968},
+{nama:"Hutan Pinus Kalilo", kategori:"Alam", lat:-7.751500090098405, lng:110.11981455890982},
+{nama:"Demaji Eco Park", kategori:"Desa", lat:-7.731948963926859, lng:110.08076262858565},
+{nama:"Gunung Kunir", kategori:"Alam", lat:-7.629396391238906, lng:110.12741859956478},
+{nama:"Dawet Jembatan Butuh", kategori:"Kuliner", lat:-7.721907341283093, lng:109.8550094303513}
 ];
 
 // ================= PETA =================
-const map = L.map('map').setView([-7.7, 109.95], 10);
+const map = L.map('map').setView([-7.72, 110.00], 10);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
@@ -88,7 +85,7 @@ function jarak(lat1, lon1, lat2, lon2){
 }
 
 // ================= ANALISIS =================
-const center = {lat:-7.713, lng:110.008};
+const center = {lat:-7.7129, lng:110.0090};
 const table = document.getElementById("table");
 
 wisata.forEach(w=>{
